@@ -1,0 +1,8 @@
+nf-fastqc
+nf-kallisto
+nf-featurecounts
+nf-multiqc
+nf-deseq2
+.nextflow
+work
+.nextflow*
