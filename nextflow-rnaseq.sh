@@ -9,7 +9,7 @@ get_latest_release() {
 }
 
 PROFILE=$1
-LOGS=$3
+LOGS=logs
 
 if [[ "$2" != "clone" ]] ; 
   then
@@ -159,8 +159,8 @@ for PID in $RUN_featurecounts_and_multiqc_PID $DESEQ2_PID ;
     fi
 done
 
-cat $(find . -name upload.txt) > upload.txt
-echo "main ${LOGS}/software.txt" >> upload.txt
+cat $(find ../ -name upload.txt) > upload.txt
+echo "main $(readlink -f ${LOGS}/software.txt)" >> upload.txt
 echo "main $(readlink -f Material_and_Methods.md)" >> upload.txt
 echo "- done" && sleep 1
 
