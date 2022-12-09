@@ -1,0 +1,23 @@
+{ 
+  "project_folder" : "~/nextflow-rnaseq-test/" ,
+  "fastqc_raw_data" : "~/nextflow-rnaseq-test/raw_data" ,
+  "kallisto_raw_data" : "~/nextflow-rnaseq-test/raw_data" ,
+  "featurecounts_raw_data" : "~/nextflow-rnaseq-test/raw_data",
+  "genomes" : "~/nextflow-rnaseq-test" ,
+  "organism" : "caenorhabditis_elegans" ,
+  "release" : "107" ,
+  "url_gtf" : "ftp://ftp.ensembl.org/pub/release-107/gtf/caenorhabditis_elegans/" ,
+  "url_dna" : "ftp://ftp.ensembl.org/pub/release-107/fasta/caenorhabditis_elegans/dna/" ,
+  "ercc_label" : "ercc92" ,
+  "url_ercc_gtf" : "https://datashare.mpcdf.mpg.de/s/MOxbNrXeBNcg9wt/download" ,
+  "url_ercc_fa" : "https://datashare.mpcdf.mpg.de/s/H9PQu3vDRi9saqV/download" ,
+  "biomart_host":"http://dec2021.archive.ensembl.org/biomart/",
+  "biomart_dataset":"celegans_gene_ensembl",
+  "circRNA":"None",
+  "daviddatabase":"ENSEMBL_GENE_ID",
+  "DAVIDUSER":"david.registered@email.com",
+  "cytoscape_host":"~/cytoscape.ip.txt",
+  "species":"caenorhabditis elegans",
+  "spec":"celegans",
+  "homefolder":"~/"
+}
