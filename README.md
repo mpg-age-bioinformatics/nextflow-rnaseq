@@ -80,11 +80,4 @@ Most relevant results files will be found in `~/nextflow-rnaseq-run/summary` eg.
 ./qc_plots/grouped.heatMap.pdf
 ./qc_plots/sample.heatMap.pdf
 ./qc_plots/group.distance.matrix.pdf
-./fastqc
-./fastqc/muscle.Rep_3.READ_1_fastqc.html
-./fastqc/intestine.Rep_3.READ_1_fastqc.html
-./fastqc/intestine.Rep_1.READ_1_fastqc.html
-./fastqc/intestine.Rep_2.READ_1_fastqc.html
-./fastqc/muscle.Rep_1.READ_1_fastqc.html
-./fastqc/muscle.Rep_2.READ_1_fastqc.html
 ```
