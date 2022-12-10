@@ -1,5 +1,11 @@
 # nextflow-rnaseq
 
+Prerequisites:
+
+- nextflow: [https://www.nextflow.io](https://www.nextflow.io)
+- docker: [https://www.docker.com](https://www.docker.com)
+- unix based system
+
 Create the project and raw data folder:
 ```bash
 mkdir -p ~/nextflow-rnaseq-run/raw_data
