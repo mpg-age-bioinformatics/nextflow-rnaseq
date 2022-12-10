@@ -9,7 +9,9 @@ get_latest_release() {
 }
 
 PROFILE=$1
-LOGS=logs
+LOGS=work
+
+mkdir -p ${LOGS}
 
 if [[ "$2" != "clone" ]] ; 
   then
@@ -52,8 +54,6 @@ else
   done
 
 fi
-
-mkdir -p ${LOGS}
 
 get_images() {
   echo "- downloading images"
