@@ -8,9 +8,9 @@ get_latest_release() {
     sed -E 's/.*"([^"]+)".*/\1/'
 }
 
-PROFILE=$2
+PROFILE=local
 LOGS="work"
-PARAMS="params.json"
+PARAMS="${2}"
 
 mkdir -p ${LOGS}
 
@@ -102,68 +102,39 @@ run_enrichments() {
   nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry cellplots -profile ${PROFILE} >> ${LOGS}/enrichments.log 2>&1
 }
 
-get_images && sleep 1
-run_fastqc & RUN_fastqc_PID=$!
-sleep 1
-run_kallisto & RUN_kallisto_PID=$!
-sleep 1
+get_images && \
+run_fastqc && \
+run_kallisto && \
+run_featurecounts_and_multiqc && \
+run_deseq2 && \
+run_enrichments && \
+echo "- running rcistarget" && \
+nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry rcistarget -profile ${PROFILE} >> ${LOGS}/rcistarget.log 2>&1 && \
+echo "- running qc" && \
+nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry qc -profile ${PROFILE} >> ${LOGS}/qc.log 2>&1 && \
+echo "- running cytoscape" && \
+nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry string_cytoscape -profile ${PROFILE} >> ${LOGS}/string_cytoscape.log 2>&1 && \
+nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry upload -profile ${PROFILE} >> ${LOGS}/deseq2.log 2>&1 && \
 
-for PID in $RUN_fastqc_PID $RUN_kallisto_PID ; 
-    do
-        wait -f $PID
-        CODE=$?
-        if [[ "$CODE" != "0" ]] ; 
-            then
-                exit $CODE
-        fi
-        
-done
-
-run_featurecounts_and_multiqc & RUN_featurecounts_and_multiqc_PID=$!
-
-run_deseq2 & RUN_deseq2_PID=$!
-wait -f $RUN_deseq2_PID
-CODE=$?
-if [[ "$CODE" != "0" ]] ; 
-    then
-        exit $CODE
-fi
-
-run_enrichments & RUN_enrichments_PID=$!
-echo "- running rcistarget" && sleep 1
-nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry rcistarget -profile ${PROFILE} >> ${LOGS}/rcistarget.log 2>&1 & RCISTARGET_PID=$!
-echo "- running qc" && sleep 1
-nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry qc -profile ${PROFILE} >> ${LOGS}/qc.log 2>&1 & QC_PID=$!
-echo "- running cytoscape" && sleep 1
-nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry string_cytoscape -profile ${PROFILE} >> ${LOGS}/string_cytoscape.log 2>&1 & CYTOSCAPE_PID=$!
-
-
-for PID in $RUN_enrichments_PID $RCISTARGET_PID $QC_PID $CYTOSCAPE_PID ;
+LOGS=$(readlink -f ${LOGS})
+project_folder=$(grep project_folder ${PARAMS} | awk -F\" '{print $4}' )
+cd ${project_folder}
+rm -rf upload.txt
+cat $(find . -name upload.txt) > upload.txt
+mkdir -p summary
+while read line ; 
   do 
-    wait -f $PID
-    CODE=$?
-    if [[ "$CODE" != "0" ]] ; 
-        then
-            exit $CODE
+    folder=$(echo ${line} | awk '{ st = index($0," ");print $1}')
+    ref=$(echo ${line} | awk '{ st = index($0," ");print substr($0,st+1)}')
+    if [[ "${folder}" != "main" ]] ;
+      then
+        target=summary/${folder}/$(basename ${ref})
+        mkdir -p summary/${folder}
+    else
+      target=summary/$(basename ${ref})
     fi
-done
+  ln -s ${ref} ${target}
+done < upload.txt
 
-nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry upload -profile ${PROFILE} >> ${LOGS}/deseq2.log 2>&1 & DESEQ2_PID=$!
-
-for PID in $RUN_featurecounts_and_multiqc_PID $DESEQ2_PID ; 
-  do
-    wait -f $PID
-    CODE=$?
-    if [[ "$CODE" != "0" ]] ; 
-        then
-            exit $CODE
-    fi
-done
-
-rm -rf ../upload.txt
-cat $(find ../ -name upload.txt) > ../upload.txt
-echo "main $(readlink -f ${LOGS}/software.txt)" >> ../upload.txt
-echo "main $(readlink -f Material_and_Methods.md)" >> ../upload.txt
-echo "- done" && sleep 1
-
+echo "- done"
 exit
