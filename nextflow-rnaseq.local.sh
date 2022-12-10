@@ -14,33 +14,33 @@ PARAMS="${2}"
 
 mkdir -p ${LOGS}
 
-if [[ "$1" != "clone" ]] ; 
+if [[ "$1" == "release" ]] ; 
   then
 
     ORIGIN="mpg-age-bioinformatics/"
     
     FASTQC_RELEASE=$(get_latest_release ${ORIGIN}nf-fastqc)
-    echo "${ORIGIN}nf-fastqc:${FASTQC_RELEASE}" >> ${LOGS}/software.txt_
+    echo "${ORIGIN}nf-fastqc:${FASTQC_RELEASE}" >> ${LOGS}/software.txt
     FASTQC_RELEASE="-r ${FASTQC_RELEASE}"
     
     KALLISTO_RELEASE=$(get_latest_release ${ORIGIN}nf-kallisto)
-    echo "${ORIGIN}nf-kallisto:${KALLISTO_RELEASE}" >> ${LOGS}/software.txt_
+    echo "${ORIGIN}nf-kallisto:${KALLISTO_RELEASE}" >> ${LOGS}/software.txt
     KALLISTO_RELEASE="-r ${KALLISTO_RELEASE}"
     
     FEATURECOUNTS_RELEASE=$(get_latest_release ${ORIGIN}nf-featurecounts)
-    echo "${ORIGIN}nf-featurecounts:${FEATURECOUNTS_RELEASE}" >> ${LOGS}/software.txt_
+    echo "${ORIGIN}nf-featurecounts:${FEATURECOUNTS_RELEASE}" >> ${LOGS}/software.txt
     FEATURECOUNTS_RELEASE="-r ${FEATURECOUNTS_RELEASE}"
     
     MULTIQC_RELEASE=$(get_latest_release ${ORIGIN}nf-multiqc)
-    echo "${ORIGIN}nf-multiqc:${MULTIQC_RELEASE}" >> ${LOGS}/software.txt_
+    echo "${ORIGIN}nf-multiqc:${MULTIQC_RELEASE}" >> ${LOGS}/software.txt
     MULTIQC_RELEASE="-r ${MULTIQC_RELEASE}"
     
     DESEQ2_RELEASE=$(get_latest_release ${ORIGIN}nf-deseq2)
-    echo "${ORIGIN}nf-deseq2:${DESEQ2_RELEASE}" >> ${LOGS}/software.txt_
+    echo "${ORIGIN}nf-deseq2:${DESEQ2_RELEASE}" >> ${LOGS}/software.txt
     DESEQ2_RELEASE="-r ${DESEQ2_RELEASE}"
     
-    uniq ${LOGS}/software.txt_ ${LOGS}/software.txt 
-    rm ${LOGS}/software.txt_
+    uniq ${LOGS}/software.txt ${LOGS}/software.txt_
+    mv ${LOGS}/software.txt_ ${LOGS}/software.txt
     
 else
 
@@ -50,6 +50,23 @@ else
       if [[ ! -e ${repo} ]] ;
         then
           git clone git@github.com:mpg-age-bioinformatics/${repo}.git
+          if [[ "$1" == "checkout" ]] ;
+            then
+              cd ${repo}
+              RELEASE=$(get_latest_release ${ORIGIN}${repo})
+              git checkout ${RELEASE}
+              cd ../
+              echo "${ORIGIN}${repo}:${RELEASE}" >> ${LOGS}/software.txt
+          fi
+      fi
+
+      if [[ "$1" == "checkout" ]] ;
+        then 
+          if [[ -f ${LOGS}/software.txt ]] ;
+            then
+              uniq ${LOGS}/software.txt >> ${LOGS}/software.txt_ 
+              mv ${LOGS}/software.txt_ ${LOGS}/software.txt
+          fi
       fi
 
   done
