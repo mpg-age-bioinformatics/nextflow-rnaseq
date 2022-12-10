@@ -46,3 +46,45 @@ Run the workflow:
 cd ~/nextflow-rnaseq-run
 bash nextflow-rnaseq.local.sh release params.local.json
 ```
+
+Most relevant results files will be found in `~/nextflow-rnaseq-run/summary` eg.:
+```
+./multiqc
+./multiqc/multiqc_report.html
+./deseq2
+./deseq2/masterTable_annotated.xlsx
+./deseq2/group_muscle_vs_intestine.results.xlsx
+./deseq2/significant.xlsx
+./togo
+./togo/group_muscle_vs_intestine.topGO.tsv
+./togo/group_muscle_vs_intestine.topGO.GOTERM_BP.cellplot.pdf
+./togo/group_muscle_vs_intestine.topGO.GOTERM_BP.symplot.pdf
+./togo/group_muscle_vs_intestine.topGO.xlsx
+./qc_plots
+./qc_plots/count.matrix.scatter.plot.pdf
+./qc_plots/p.value.dist.pdf
+./qc_plots/pca_all_samples.pdf
+./qc_plots/grouped.KDE.pdf
+./qc_plots/sigFeatures.matrix.pdf
+./qc_plots/sample.distance.matrix.pdf
+./qc_plots/MA.plots.pdf
+./qc_plots/sample.KDE.pdf
+./qc_plots/grouped.barPlots.pdf
+./qc_plots/q.value.dist.pdf
+./qc_plots/sample.dendrogram.pdf
+./qc_plots/pca_comp_all_samples.xlsx
+./qc_plots/sample.barPlots.pdf
+./qc_plots/group_muscle_vs_intestine_pca.xlsx
+./qc_plots/pca.pdf
+./qc_plots/volcano.plots.pdf
+./qc_plots/grouped.heatMap.pdf
+./qc_plots/sample.heatMap.pdf
+./qc_plots/group.distance.matrix.pdf
+./fastqc
+./fastqc/muscle.Rep_3.READ_1_fastqc.html
+./fastqc/intestine.Rep_3.READ_1_fastqc.html
+./fastqc/intestine.Rep_1.READ_1_fastqc.html
+./fastqc/intestine.Rep_2.READ_1_fastqc.html
+./fastqc/muscle.Rep_1.READ_1_fastqc.html
+./fastqc/muscle.Rep_2.READ_1_fastqc.html
+```
