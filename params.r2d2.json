@@ -1,5 +1,6 @@
 { 
   "project_folder" : "/beegfs/group_bit/home/JBoucas/nextflow-rnaseq-test/" ,
+  "samplestable":"/beegfs/group_bit/home/JBoucas/nextflow-rnaseq-test/sample_sheet.xlsx",
   "fastqc_raw_data" :  "/beegfs/group_bit/home/JBoucas/nextflow-rnaseq-test/raw_data" ,
   "kallisto_raw_data" : "/beegfs/group_bit/home/JBoucas/nextflow-rnaseq-test/raw_data" ,
   "featurecounts_raw_data" : "/beegfs/group_bit/home/JBoucas/nextflow-rnaseq-test/raw_data" ,
