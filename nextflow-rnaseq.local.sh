@@ -44,29 +44,24 @@ if [[ "$1" == "release" ]] ;
     
 else
 
-  for repo in nf-fastqc nf-deseq2 nf-kallisto nf-featurecounts nf-multiqc nf-deseq2 ; 
+  for repo in nf-fastqc  nf-kallisto nf-featurecounts nf-multiqc nf-deseq2   ; 
     do
 
       if [[ ! -e ${repo} ]] ;
         then
           git clone git@github.com:mpg-age-bioinformatics/${repo}.git
-          if [[ "$1" == "checkout" ]] ;
-            then
-              cd ${repo}
-              RELEASE=$(get_latest_release ${ORIGIN}${repo})
-              git checkout ${RELEASE}
-              cd ../
-              echo "${ORIGIN}${repo}:${RELEASE}" >> ${LOGS}/software.txt
-          fi
       fi
 
       if [[ "$1" == "checkout" ]] ;
-        then 
-          if [[ -f ${LOGS}/software.txt ]] ;
-            then
-              uniq ${LOGS}/software.txt >> ${LOGS}/software.txt_ 
-              mv ${LOGS}/software.txt_ ${LOGS}/software.txt
-          fi
+        then
+          cd ${repo}
+          git pull
+          RELEASE=$(get_latest_release ${ORIGIN}${repo})
+          git checkout ${RELEASE}
+          cd ../
+          echo "${ORIGIN}${repo}:${RELEASE}" >> ${LOGS}/software.txt
+          uniq ${LOGS}/software.txt >> ${LOGS}/software.txt_ 
+          mv ${LOGS}/software.txt_ ${LOGS}/software.txt
       fi
 
   done
