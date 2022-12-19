@@ -1,5 +1,9 @@
 #!/bin/bash
 
+## usage:
+## $1 : `release` for latest nextflow/git release; `checkout` for git clone followed by git checkout of a tag ; `clone` for latest repo commit
+## $2 : profile
+
 set -e
 
 get_latest_release() {
