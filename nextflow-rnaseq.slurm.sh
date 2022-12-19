@@ -64,11 +64,16 @@ else
           git checkout ${RELEASE}
           cd ../
           echo "${ORIGIN}${repo}:${RELEASE}" >> ${LOGS}/software.txt
-          uniq ${LOGS}/software.txt >> ${LOGS}/software.txt_ 
-          mv ${LOGS}/software.txt_ ${LOGS}/software.txt
+      else
+        cd ${repo}
+        COMMIT=$(git rev-parse --short HEAD)
+        echo "${ORIGIN}${repo}:${COMMIT}" >> ${LOGS}/software.txt
       fi
 
   done
+
+  uniq ${LOGS}/software.txt >> ${LOGS}/software.txt_ 
+  mv ${LOGS}/software.txt_ ${LOGS}/software.txt
 
 fi
 
