@@ -67,6 +67,7 @@ else
       else
         cd ${repo}
         COMMIT=$(git rev-parse --short HEAD)
+        cd ../
         echo "${ORIGIN}${repo}:${COMMIT}" >> ${LOGS}/software.txt
       fi
 
