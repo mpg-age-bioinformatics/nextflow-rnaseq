@@ -3,6 +3,7 @@
 ## usage:
 ## $1 : `release` for latest nextflow/git release; `checkout` for git clone followed by git checkout of a tag ; `clone` for latest repo commit
 ## $2 : profile
+## $3 : upload_list
 
 set -e
 
@@ -186,6 +187,7 @@ rm -rf ../upload.txt
 cat $(find ../ -name upload.txt) > ../upload.txt
 echo "main $(readlink -f ${LOGS}/software.txt)" >> ../upload.txt
 echo "main $(readlink -f Material_and_Methods.md)" >> ../upload.txt
+cp ../upload.txt ${upload_list}
 echo "- done" && sleep 1
 
 exit
