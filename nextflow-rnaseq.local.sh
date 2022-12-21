@@ -140,7 +140,7 @@ nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry 
 
 LOGS=$(readlink -f ${LOGS})
 project_folder=$(grep project_folder ${PARAMS} | awk -F\" '{print $4}' )
-cd ${project_folder}
+eval cd ${project_folder}
 rm -rf upload.txt
 cat $(find . -name upload.txt) > upload.txt
 mkdir -p summary
