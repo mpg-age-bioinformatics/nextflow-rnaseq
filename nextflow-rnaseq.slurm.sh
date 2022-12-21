@@ -4,6 +4,7 @@
 ## $1 : `release` for latest nextflow/git release; `checkout` for git clone followed by git checkout of a tag ; `clone` for latest repo commit
 ## $2 : profile
 ## $3 : upload_list
+## $4 : params.json file
 
 set -e
 
@@ -15,7 +16,7 @@ get_latest_release() {
 
 PROFILE=$2
 LOGS="work"
-PARAMS="../params.json"
+PARAMS=$4
 
 mkdir -p ${LOGS}
 
