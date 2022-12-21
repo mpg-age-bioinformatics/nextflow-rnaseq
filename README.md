@@ -31,6 +31,14 @@ curl -J -O https://raw.githubusercontent.com/mpg-age-bioinformatics/nextflow-rna
 curl -J -O https://raw.githubusercontent.com/mpg-age-bioinformatics/nf-deseq2/main/sample_sheet.xlsx
 ```
 
+For the test data edit the contents of `params.local.json` replacing the `~` with the full path to your home folder. Eg.
+ ```bash
+ # linux
+ sed -i 's/\~/\/Users\/jboucas/g' params.local.json
+ # mac 
+ sed -i '' 's/\~/\/Users\/jboucas/g' params.local.json
+ ```
+
 Run the workflow:
 ```bash
 cd ~/nextflow-rnaseq-run
