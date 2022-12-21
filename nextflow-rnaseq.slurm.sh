@@ -15,7 +15,7 @@ get_latest_release() {
 
 PROFILE=$2
 LOGS="work"
-PARAMS=params.json
+PARAMS="params.json"
 
 mkdir -p ${LOGS}
 
