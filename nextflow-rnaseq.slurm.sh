@@ -133,7 +133,7 @@ sleep 1
 
 for PID in $RUN_fastqc_PID $RUN_kallisto_PID ; 
     do
-        wait $PID
+        wait -f $PID
         CODE=$?
         if [[ "$CODE" != "0" ]] ; 
             then
@@ -145,7 +145,7 @@ done
 run_featurecounts_and_multiqc & RUN_featurecounts_and_multiqc_PID=$!
 
 run_deseq2 & RUN_deseq2_PID=$!
-wait $RUN_deseq2_PID
+wait -f $RUN_deseq2_PID
 CODE=$?
 if [[ "$CODE" != "0" ]] ; 
     then
@@ -163,7 +163,7 @@ nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry 
 
 for PID in $RUN_enrichments_PID $RCISTARGET_PID $QC_PID $CYTOSCAPE_PID ;
   do 
-    wait $PID
+    wait -f $PID
     CODE=$?
     if [[ "$CODE" != "0" ]] ; 
         then
@@ -175,7 +175,7 @@ nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry 
 
 for PID in $RUN_featurecounts_and_multiqc_PID $DESEQ2_PID ; 
   do
-    wait $PID
+    wait -f $PID
     CODE=$?
     if [[ "$CODE" != "0" ]] ; 
         then
