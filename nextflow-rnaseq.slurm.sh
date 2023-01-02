@@ -185,8 +185,10 @@ done
 
 rm -rf ${project_folder}/upload.txt
 cat $(find ${project_folder}/ -name upload.txt) > ${project_folder}/upload.txt
-echo "main $(readlink -f ${LOGS}/software.txt)" >> ${project_folder}/upload.txt
-echo "main $(readlink -f Material_and_Methods.md)" >> ${project_folder}/upload.txt
+cp ${LOGS}/software.txt ${project_folder}/software.txt
+cp Material_and_Methods.md ${project_folder}/Material_and_Methods.md
+echo "main $(readlink -f ${project_folder}/software.txt)" >> ${project_folder}/upload.txt
+echo "main $(readlink -f ${project_folder}/Material_and_Methods.md)" >> ${project_folder}/upload.txt
 cp ${project_folder}/upload.txt ${upload_list}
 echo "- done" && sleep 1
 
