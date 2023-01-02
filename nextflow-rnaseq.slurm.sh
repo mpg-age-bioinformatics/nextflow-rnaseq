@@ -133,7 +133,7 @@ sleep 1
 
 for PID in $RUN_fastqc_PID $RUN_kallisto_PID ; 
     do
-        wait -f $PID
+        wait $PID
         CODE=$?
         if [[ "$CODE" != "0" ]] ; 
             then
@@ -145,7 +145,7 @@ done
 run_featurecounts_and_multiqc & RUN_featurecounts_and_multiqc_PID=$!
 
 run_deseq2 & RUN_deseq2_PID=$!
-wait -f $RUN_deseq2_PID
+wait $RUN_deseq2_PID
 CODE=$?
 if [[ "$CODE" != "0" ]] ; 
     then
@@ -163,7 +163,7 @@ nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry 
 
 for PID in $RUN_enrichments_PID $RCISTARGET_PID $QC_PID $CYTOSCAPE_PID ;
   do 
-    wait -f $PID
+    wait $PID
     CODE=$?
     if [[ "$CODE" != "0" ]] ; 
         then
@@ -175,7 +175,7 @@ nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry 
 
 for PID in $RUN_featurecounts_and_multiqc_PID $DESEQ2_PID ; 
   do
-    wait -f $PID
+    wait $PID
     CODE=$?
     if [[ "$CODE" != "0" ]] ; 
         then
@@ -183,11 +183,11 @@ for PID in $RUN_featurecounts_and_multiqc_PID $DESEQ2_PID ;
     fi
 done
 
-rm -rf ../upload.txt
-cat $(find ../ -name upload.txt) > ../upload.txt
-echo "main $(readlink -f ${LOGS}/software.txt)" >> ../upload.txt
-echo "main $(readlink -f Material_and_Methods.md)" >> ../upload.txt
-cp ../upload.txt ${upload_list}
+rm -rf ${project_folder}/upload.txt
+cat $(find ${project_folder}/ -name upload.txt) > ${project_folder}/upload.txt
+echo "main $(readlink -f ${LOGS}/software.txt)" >> ${project_folder}/upload.txt
+echo "main $(readlink -f Material_and_Methods.md)" >> ${project_folder}/upload.txt
+cp ${project_folder}/upload.txt ${upload_list}
 echo "- done" && sleep 1
 
 exit
