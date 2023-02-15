@@ -82,3 +82,13 @@ After normalization of read counts by making use of the standard median-ratio fo
 
 After removal of genes with less then 10 overall reads log2 fold changes were shrank using 
 approximate posterior estimation for GLM coefficients.
+
+## References:
+
+*cufflinks* https://www.nature.com/articles/nprot.2012.016
+
+*kallisto* https://www.nature.com/articles/nbt.3519
+
+*RSeQC* https://academic.oup.com/bioinformatics/article/28/16/2184/325191
+
+*DESeq2* https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8
