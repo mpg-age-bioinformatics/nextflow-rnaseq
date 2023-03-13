@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source RNAseq.config
+
 ## usage:
 ## $1 : `release` for latest nextflow/git release; `checkout` for git clone followed by git checkout of a tag ; `clone` for latest repo commit
 ## $2 : profile
@@ -120,7 +122,7 @@ run_deseq2() {
 
 run_enrichments() {
   echo "- running enrichments"
-  nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry david -profile ${PROFILE} >> ${LOGS}/enrichments.log 2>&1 && \
+  nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} --DAVIDUSER ${DAVIDUSER} -params-file ${PARAMS} -entry david -profile ${PROFILE} >> ${LOGS}/enrichments.log 2>&1 && \
   nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry topgo -profile ${PROFILE} >> ${LOGS}/enrichments.log 2>&1 && \
   nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry cellplots -profile ${PROFILE} >> ${LOGS}/enrichments.log 2>&1
 }
