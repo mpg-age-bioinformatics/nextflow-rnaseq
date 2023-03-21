@@ -139,6 +139,7 @@ for PID in $RUN_fastqc_PID $RUN_kallisto_PID ;
         CODE=$?
         if [[ "$CODE" != "0" ]] ; 
             then
+                echo "exit $CODE"
                 exit $CODE
         fi
         
@@ -151,6 +152,7 @@ wait $RUN_deseq2_PID
 CODE=$?
 if [[ "$CODE" != "0" ]] ; 
     then
+        echo "exit $CODE"
         exit $CODE
 fi
 
@@ -169,6 +171,7 @@ for PID in $RUN_enrichments_PID $RCISTARGET_PID $QC_PID $CYTOSCAPE_PID ;
     CODE=$?
     if [[ "$CODE" != "0" ]] ; 
         then
+            echo "exit $CODE"
             exit $CODE
     fi
 done
@@ -181,6 +184,7 @@ for PID in $RUN_featurecounts_and_multiqc_PID $DESEQ2_PID ;
     CODE=$?
     if [[ "$CODE" != "0" ]] ; 
         then
+            echo "exit $CODE"
             exit $CODE
     fi
 done
