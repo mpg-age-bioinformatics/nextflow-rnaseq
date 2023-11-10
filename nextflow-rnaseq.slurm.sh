@@ -8,6 +8,9 @@ source RNAseq.config
 
 set -e
 
+
+module load singularity
+
 get_latest_release() {
   curl --silent "https://api.github.com/repos/$1/releases/latest" |
     grep '"tag_name":' |
