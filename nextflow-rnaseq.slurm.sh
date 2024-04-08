@@ -11,6 +11,24 @@ set -e
 
 module load singularity
 
+
+wait_for(){
+    PID=$(echo "$1" | cut -d ":" -f 1 )
+    PRO=$(echo "$1" | cut -d ":" -f 2 )
+    echo "$(date '+%Y-%m-%d %H:%M:%S'): waiting for ${PRO}"
+    wait $PID
+    CODE=$?
+    
+    if [[ "$CODE" != "0" ]] ; 
+        then
+            echo "$PRO failed"
+            echo "$CODE"
+            failed=true
+            #exit $CODE
+    fi
+}
+
+
 get_latest_release() {
   curl --silent "https://api.github.com/repos/$1/releases/latest" |
     grep '"tag_name":' |
@@ -135,28 +153,28 @@ sleep 1
 run_kallisto & RUN_kallisto_PID=$!
 sleep 1
 
-for PID in $RUN_fastqc_PID $RUN_kallisto_PID ; 
+for PID in "${RUN_fastqc_PID}:FASTQC" "${RUN_kallisto_PID}:KALLISTO" ; 
     do
-        wait $PID
-        CODE=$?
-        if [[ "$CODE" != "0" ]] ; 
-            then
-                echo "exit $CODE"
-                exit $CODE
-        fi
-        
+        wait_for $PID
+        # wait $PID
+        # CODE=$?
+        # if [[ "$CODE" != "0" ]] ; 
+        #     then
+        #         echo "exit $CODE"
+        #         exit $CODE
+        # fi     
 done
 
 run_featurecounts_and_multiqc & RUN_featurecounts_and_multiqc_PID=$!
 
-run_deseq2 & RUN_deseq2_PID=$!
-wait $RUN_deseq2_PID
-CODE=$?
-if [[ "$CODE" != "0" ]] ; 
-    then
-        echo "exit $CODE"
-        exit $CODE
-fi
+run_deseq2 && sleep 1
+# wait $RUN_deseq2_PID
+# CODE=$?
+# if [[ "$CODE" != "0" ]] ; 
+#     then
+#         echo "exit $CODE"
+#         exit $CODE
+# fi
 
 run_enrichments & RUN_enrichments_PID=$!
 echo "- running rcistarget" && sleep 1
@@ -167,28 +185,30 @@ echo "- running cytoscape" && sleep 1
 nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry string_cytoscape -profile ${PROFILE} >> ${LOGS}/string_cytoscape.log 2>&1 & CYTOSCAPE_PID=$!
 
 
-for PID in $RUN_enrichments_PID $RCISTARGET_PID $QC_PID $CYTOSCAPE_PID ;
+for PID in "${RUN_enrichments_PID}:enrichments" "${RCISTARGET_PID}:rcistarget" "${QC_PID}:qc" "${CYTOSCAPE_PID}:cytoscape" ;
   do 
-    wait $PID
-    CODE=$?
-    if [[ "$CODE" != "0" ]] ; 
-        then
-            echo "exit $CODE"
-            exit $CODE
-    fi
+    wait_for $PID
+    # wait $PID
+    # CODE=$?
+    # if [[ "$CODE" != "0" ]] ; 
+    #     then
+    #         echo "exit $CODE"
+    #         exit $CODE
+    # fi
 done
 
 nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry upload -profile ${PROFILE} >> ${LOGS}/deseq2.log 2>&1 & DESEQ2_PID=$!
 
-for PID in $RUN_featurecounts_and_multiqc_PID $DESEQ2_PID ; 
+for PID in "${RUN_featurecounts_and_multiqc_PID}:featurecounts_and_multiqc" "${DESEQ2_PID}:deseq2_upload" ; 
   do
-    wait $PID
-    CODE=$?
-    if [[ "$CODE" != "0" ]] ; 
-        then
-            echo "exit $CODE"
-            exit $CODE
-    fi
+    wait_for $PID
+    # wait $PID
+    # CODE=$?
+    # if [[ "$CODE" != "0" ]] ; 
+    #     then
+    #         echo "exit $CODE"
+    #         exit $CODE
+    # fi
 done
 
 rm -rf ${project_folder}/upload.txt
