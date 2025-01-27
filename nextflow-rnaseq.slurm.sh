@@ -112,39 +112,39 @@ get_images() {
 
 run_fastqc() {
   echo "- running fastqc"
-  nextflow run ${ORIGIN}nf-fastqc ${FASTQC_RELEASE} -params-file ${PARAMS} -profile ${PROFILE} >> ${LOGS}/nf-fastqc.log 2>&1 && \
-  nextflow run ${ORIGIN}nf-fastqc ${FASTQC_RELEASE} -params-file ${PARAMS} -entry upload -profile ${PROFILE} >> ${LOGS}/nf-fastqc.log 2>&1
+  nextflow run ${ORIGIN}nf-fastqc ${FASTQC_RELEASE} -w ${LOGS}/.fastqc -params-file ${PARAMS} -profile ${PROFILE} >> ${LOGS}/nf-fastqc.log 2>&1 && \
+  nextflow run ${ORIGIN}nf-fastqc ${FASTQC_RELEASE} -w ${LOGS}/.fastqc_upload -params-file ${PARAMS} -entry upload -profile ${PROFILE} >> ${LOGS}/nf-fastqc.log 2>&1
 }
 
 run_kallisto() {
   echo "- running kallisto"
-  nextflow run ${ORIGIN}nf-kallisto ${KALLISTO_RELEASE} -params-file ${PARAMS} -entry get_genome -profile ${PROFILE} >> ${LOGS}/kallisto.log 2>&1 && \
-  nextflow run ${ORIGIN}nf-kallisto ${KALLISTO_RELEASE} -params-file ${PARAMS} -entry write_cdna -profile ${PROFILE} >> ${LOGS}/kallisto.log 2>&1 && \
-  nextflow run ${ORIGIN}nf-kallisto ${KALLISTO_RELEASE} -params-file ${PARAMS} -entry index -profile ${PROFILE} >> ${LOGS}/kallisto.log 2>&1 && \
-  nextflow run ${ORIGIN}nf-kallisto ${KALLISTO_RELEASE} -params-file ${PARAMS} -entry check_strand -profile ${PROFILE} >> ${LOGS}/kallisto.log 2>&1 && \
-  nextflow run ${ORIGIN}nf-kallisto ${KALLISTO_RELEASE} -params-file ${PARAMS} -entry map_reads -profile ${PROFILE} >> ${LOGS}/kallisto.log 2>&1
+  nextflow run ${ORIGIN}nf-kallisto ${KALLISTO_RELEASE} -w ${LOGS}/.kallisto_get_genome -params-file ${PARAMS} -entry get_genome -profile ${PROFILE} >> ${LOGS}/kallisto.log 2>&1 && \
+  nextflow run ${ORIGIN}nf-kallisto ${KALLISTO_RELEASE} -w ${LOGS}/.kallisto_write_cdna -params-file ${PARAMS} -entry write_cdna -profile ${PROFILE} >> ${LOGS}/kallisto.log 2>&1 && \
+  nextflow run ${ORIGIN}nf-kallisto ${KALLISTO_RELEASE} -w ${LOGS}/.kallisto_index -params-file ${PARAMS} -entry index -profile ${PROFILE} >> ${LOGS}/kallisto.log 2>&1 && \
+  nextflow run ${ORIGIN}nf-kallisto ${KALLISTO_RELEASE} -w ${LOGS}/.kallisto_check_strand -params-file ${PARAMS} -entry check_strand -profile ${PROFILE} >> ${LOGS}/kallisto.log 2>&1 && \
+  nextflow run ${ORIGIN}nf-kallisto ${KALLISTO_RELEASE} -w ${LOGS}/.kallisto_map_reads -params-file ${PARAMS} -entry map_reads -profile ${PROFILE} >> ${LOGS}/kallisto.log 2>&1
 }
 
 run_featurecounts_and_multiqc() {
   echo "- running featurecounts" && \
-  nextflow run ${ORIGIN}nf-featurecounts ${FEATURECOUNTS_RELEASE} -params-file ${PARAMS} -profile ${PROFILE} >> ${LOGS}/featurecounts.log 2>&1 && \
+  nextflow run ${ORIGIN}nf-featurecounts ${FEATURECOUNTS_RELEASE} -w ${LOGS}/.featurecounts -params-file ${PARAMS} -profile ${PROFILE} >> ${LOGS}/featurecounts.log 2>&1 && \
   echo "- running multiqc" && \
-  nextflow run ${ORIGIN}nf-multiqc ${MULTIQC_RELEASE} -params-file ${PARAMS} -profile ${PROFILE} >> ${LOGS}/multiqc.log 2>&1 && \
-  nextflow run ${ORIGIN}nf-multiqc ${MULTIQC_RELEASE} -params-file ${PARAMS} -entry upload -profile ${PROFILE} >> ${LOGS}/multiqc.log 2>&1
+  nextflow run ${ORIGIN}nf-multiqc ${MULTIQC_RELEASE} -w ${LOGS}/.multiqc -params-file ${PARAMS} -profile ${PROFILE} >> ${LOGS}/multiqc.log 2>&1 && \
+  nextflow run ${ORIGIN}nf-multiqc ${MULTIQC_RELEASE} -w ${LOGS}/.multiqc_upload -params-file ${PARAMS} -entry upload -profile ${PROFILE} >> ${LOGS}/multiqc.log 2>&1
 }
 
 run_deseq2() {
   echo "- running deseq2" && \
-  nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry preprocess -profile ${PROFILE} >> ${LOGS}/deseq2.log 2>&1 && \
-  nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry pairwise -profile ${PROFILE} >> ${LOGS}/deseq2.log 2>&1 && \
-  nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry annotate -profile ${PROFILE} >> ${LOGS}/deseq2.log 2>&1
+  nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -w ${LOGS}/.deseq2_preprocess -params-file ${PARAMS} -entry preprocess -profile ${PROFILE} >> ${LOGS}/deseq2.log 2>&1 && \
+  nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -w ${LOGS}/.deseq2_pairwise -params-file ${PARAMS} -entry pairwise -profile ${PROFILE} >> ${LOGS}/deseq2.log 2>&1 && \
+  nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -w ${LOGS}/.deseq2_annotate -params-file ${PARAMS} -entry annotate -profile ${PROFILE} >> ${LOGS}/deseq2.log 2>&1
 }
 
 run_enrichments() {
   echo "- running enrichments"
-  nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} --DAVIDUSER ${DAVIDUSER} -params-file ${PARAMS} -entry david -profile ${PROFILE} >> ${LOGS}/enrichments.log 2>&1 && \
-  nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry topgo -profile ${PROFILE} >> ${LOGS}/enrichments.log 2>&1 && \
-  nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -params-file ${PARAMS} -entry cellplots -profile ${PROFILE} >> ${LOGS}/enrichments.log 2>&1
+  nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} --DAVIDUSER ${DAVIDUSER} -w ${LOGS}/.deseq2-david -params-file ${PARAMS} -entry david -profile ${PROFILE} >> ${LOGS}/enrichments.log 2>&1 && \
+  nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -w ${LOGS}/.deseq2_topgo -params-file ${PARAMS} -entry topgo -profile ${PROFILE} >> ${LOGS}/enrichments.log 2>&1 && \
+  nextflow run ${ORIGIN}nf-deseq2 ${DESEQ2_RELEASE} -w ${LOGS}/.deseq2_cellplots -params-file ${PARAMS} -entry cellplots -profile ${PROFILE} >> ${LOGS}/enrichments.log 2>&1
 }
 
 get_images && sleep 1
