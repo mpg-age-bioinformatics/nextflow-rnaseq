@@ -4,17 +4,17 @@
 
 budding yeasts: Ensembl Candida albicans SC5314 release 22
 
-caenorhabditis elegans: Ensembl Caenorhabditis elegans release 105 / ce11
+caenorhabditis elegans: Ensembl Caenorhabditis elegans release 113 / c11
 
-homo sapiens: Ensembl Homo sapiens release 105/ hg38
+homo sapiens: Ensembl Homo sapiens release 113/ hg38
 
-drosophila melanogaster: Ensembl Drosophila melanogaster release 105 / BDGP6.32
+drosophila melanogaster: Ensembl Drosophila melanogaster release 113 / BDGP6.46
 
-mus musculus: Ensembl Mus musculus release 105 / mm39
+mus musculus: Ensembl Mus musculus release 113 / mm39
 
-nothobranchius furzeri: Ensembl Nothobranchius furzeri release 105 / Nfu_20140520
+nothobranchius furzeri: Ensembl Nothobranchius furzeri release 113 / Nfu_20140520
 
-saccharomyces cerevisiae: Ensembl Saccharomyces cerevisiae release 105 / R64-1-1
+saccharomyces cerevisiae: Ensembl Saccharomyces cerevisiae release 113 / R64-1-1
 
 ### Removal or rRNA transcripts
 
